@@ -1,5 +1,5 @@
 import App from './App.svelte';
-import './ModelViewer.svelte';
+import '@google/model-viewer';
 
 const app = new App({
 	target: document.body,
