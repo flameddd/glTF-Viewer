@@ -1,4 +1,24 @@
+
+# PWA glTF/GLB models viewer
+- desktop/mobile
+- PWA install/support offline
+- load local file
+- drawer wit control panel(desktop/mobile version)
+
+## layout
+- desktop flexbox
+  - left fix, right flex: 1, center content
+- mobile
+  - hide left
+  - empty right, show load button
+  - scroll up 1px when load file for hide URL bar
+  - icon on the top, click show drawer
+- lint, hooks
+- PWA manifest file
+- CI/CD deploy to github page
+
 *Psst — looking for a shareable component template? Go here --> [sveltejs/component-template](https://github.com/sveltejs/component-template)*
+
 
 ---
 
