@@ -1,14 +1,31 @@
 <script>
   let files;
-  export let openLeft = true;
+  let openLeft = true;
 
-  function handleOnCloseLeft () {
-    openLeft = !openLeft;
-    console.log('test')
+  const skyboxImages = [
+    { text: "No Image", url: "" },
+    {
+      text: "spruit sunrise",
+      url: "https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k_HDR.hdr"
+    },
+    {
+      text: "whipple creek regional park",
+      url: "https://modelviewer.dev/assets/whipple_creek_regional_park_04_1k.hdr"
+    }
+  ];
+
+  let skyboxImageSelected = "";
+
+
+  const test0 = `https://tdalapi.culture.tw/preview_model/f89e8e7b-5b97-4271-9b80-d0c4adb94bf8/8b0e7d46-e1d4-4c83-9fe5-16b8572fdb2e/preview_model.glb`
+  const test1 = `https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/Corset/glTF-Binary/Corset.glb`
+  const test2 = `https://github.com/google/model-viewer/raw/master/packages/shared-assets/models/shishkebab.glb`;
+
+  let modelURL = test0;
+  function loadDemoModel () {
+    modelURL = test1;
   }
 </script>
-
-
 
 <style>
   .container {
@@ -20,7 +37,6 @@
     flex-grow: 0;
     flex-shrink: 1;
     flex-basis: 0px;
-    border: 1px solid red;
     position: relative;
     overflow: hidden;
     transition: flex-basis 0.3s;
@@ -32,7 +48,7 @@
 
   .right {
     border: 1px solid blue;
-    display: relative;
+    position: relative;
     flex: 1;
   }
 
@@ -49,7 +65,7 @@
     z-index: 1;
   }
 
-  .openLeftBtn:hover {
+  .openLeftBtn:hover, .openLeftBtn:active {
     background-color: lightblue;
   }
 
@@ -68,8 +84,19 @@
   <div class="left" class:openLeft>
     <button class="closeLeft" on:click={() => openLeft = false}>close</button>
     <input type="file" name="load model" bind:files>
-    <span>open 嗎？ {openLeft}</span>  
+    <button on:click={loadDemoModel}>load Demo Model</button>
+    <div><b>skybox image:</b> {skyboxImages.filter(img => img.url === skyboxImageSelected)[0].text}</div>
+    <div>
+    <select bind:value={skyboxImageSelected}>
+      {#each skyboxImages as img}
+        <option value={img.url}>
+          {img.text}
+        </option>
+      {/each}
+    </select>
+    </div>
   </div>
+
   <div class="right">
     {#if !openLeft}
       <button class="openLeftBtn" on:click={() => openLeft = true}>></button>
@@ -86,7 +113,8 @@
     {:else}
       <model-viewer
         class="modelViewer"
-        src="https://tdalapi.culture.tw/preview_model/f89e8e7b-5b97-4271-9b80-d0c4adb94bf8/8b0e7d46-e1d4-4c83-9fe5-16b8572fdb2e/preview_model.glb"
+        src={modelURL}
+        skybox-image={skyboxImageSelected || undefined}
         auto-rotate
         camera-controls
       />

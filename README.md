@@ -16,6 +16,21 @@
 - lint, hooks
 - PWA manifest file
 - CI/CD deploy to github page
+- open left button's > set to css before content, not use string
+
+## feature
+- environment-image:
+  - dropdown list
+  - https://modelviewer.dev/shared-assets/environments/aircraft_workshop_01_1k.hdr
+- use as skybox:
+- exposure
+- shadow-intensity
+- shadow-softness
+- auto-rotate: true/false
+
+## pick colors
+- https://learnui.design/tools/accessible-color-generator.html
+
 
 *Psst — looking for a shareable component template? Go here --> [sveltejs/component-template](https://github.com/sveltejs/component-template)*
 
