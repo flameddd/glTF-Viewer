@@ -1,30 +1,21 @@
 <script>
-  let files;
-  let openLeft = true;
+  import DesktopLeft from './DesktopLeft.svelte'
 
-  const skyboxImages = [
-    { text: "No Image", url: "" },
-    {
-      text: "spruit sunrise",
-      url: "https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k_HDR.hdr"
-    },
-    {
-      text: "whipple creek regional park",
-      url: "https://modelviewer.dev/assets/whipple_creek_regional_park_04_1k.hdr"
-    }
-  ];
+  let files;
+
+  let openLeft = true;
+  let autoRotate = false;
+  let exposure = 1;
 
   let skyboxImageSelected = "";
 
-
-  const test0 = `https://tdalapi.culture.tw/preview_model/f89e8e7b-5b97-4271-9b80-d0c4adb94bf8/8b0e7d46-e1d4-4c83-9fe5-16b8572fdb2e/preview_model.glb`
-  const test1 = `https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/Corset/glTF-Binary/Corset.glb`
-  const test2 = `https://github.com/google/model-viewer/raw/master/packages/shared-assets/models/shishkebab.glb`;
-
-  let modelURL = test0;
-  function loadDemoModel () {
-    modelURL = test1;
-  }
+  let modelURL = "https://modelviewer.dev/shared-assets/models/Astronaut.glb";
+  function loadCorset () {
+    modelURL = "https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/Corset/glTF-Binary/Corset.glb"
+  } 
+  function loadAstronaut () {
+    modelURL = "https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+  } 
 </script>
 
 <style>
@@ -37,6 +28,7 @@
     flex-grow: 0;
     flex-shrink: 1;
     flex-basis: 0px;
+    padding: 0px;
     position: relative;
     overflow: hidden;
     transition: flex-basis 0.3s;
@@ -44,6 +36,8 @@
 
   .openLeft {
     flex-basis: 320px;
+    padding: 15px;
+    padding-right: 20px;
   }
 
   .right {
@@ -63,11 +57,16 @@
     position: absolute;
     transition: background-color 0.3s;
     z-index: 1;
+    color: grey;
   }
 
   .openLeftBtn:hover, .openLeftBtn:active {
     background-color: lightblue;
   }
+  .openLeftBtn::before {
+    content: '>';
+  }
+
 
   .modelViewer {
     display: block;
@@ -76,30 +75,43 @@
   }
 
   .closeLeft {
-    border: 1px solid;
+    right: 0;
+    padding: 0 12px;
+    position: absolute;
+    height: 100%;
+    top: 0;
+    color: grey;
+    border: 0;
+    background: transparent;
   }
+  .closeLeft::before {
+    content: '<';
+  }
+
+  .closeLeft:hover, .closeLeft:active {
+    background-color: lightblue;
+   }
+  
 </style>
 
 <div class="container">
   <div class="left" class:openLeft>
-    <button class="closeLeft" on:click={() => openLeft = false}>close</button>
-    <input type="file" name="load model" bind:files>
-    <button on:click={loadDemoModel}>load Demo Model</button>
-    <div><b>skybox image:</b> {skyboxImages.filter(img => img.url === skyboxImageSelected)[0].text}</div>
-    <div>
-    <select bind:value={skyboxImageSelected}>
-      {#each skyboxImages as img}
-        <option value={img.url}>
-          {img.text}
-        </option>
-      {/each}
-    </select>
-    </div>
+    {#if openLeft}
+      <button class="closeLeft" on:click={() => openLeft = false} />
+    {/if}
+    <DesktopLeft
+      bind:files={files}
+      loadCorset={loadCorset}
+      loadAstronaut={loadAstronaut}
+      bind:skyboxImageSelected={skyboxImageSelected}
+      bind:autoRotate={autoRotate}
+      bind:exposure={exposure}
+    />
   </div>
 
   <div class="right">
     {#if !openLeft}
-      <button class="openLeftBtn" on:click={() => openLeft = true}>></button>
+      <button class="openLeftBtn" on:click={() => openLeft = true} />
     {/if}
 
     {#if files && files[0]}
@@ -107,7 +119,7 @@
         class="modelViewer"
         src={URL.createObjectURL(files[0])}
         alt="A 3D model of an astronaut"
-        auto-rotate
+        auto-rotate={autoRotate || undefined}
         camera-controls
       />
     {:else}
@@ -115,10 +127,10 @@
         class="modelViewer"
         src={modelURL}
         skybox-image={skyboxImageSelected || undefined}
-        auto-rotate
+        auto-rotate={autoRotate || undefined}
         camera-controls
+        exposure={exposure}
       />
-
     {/if}
   </div>
 </div>
