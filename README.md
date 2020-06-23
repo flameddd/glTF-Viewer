@@ -13,13 +13,13 @@
   - empty right, show load button
   - scroll up 1px when load file for hide URL bar
   - icon on the top, click show drawer
-- lint, hooks
+- lint, hooks (done)
 - PWA manifest file (done)
 - Service worker
   - re-think cache file (demo model?, skybox?) strategy
   - add npm script ? workbox-cli create SW.js
 - CI/CD deploy to github page
-- open left button's > set to css before content, not use string
+- open left button's > set to css before content, not use string (done)
 
 ## feature
 - environment-image: (done)
