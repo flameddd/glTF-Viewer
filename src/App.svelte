@@ -15,15 +15,16 @@
   let autoRotate = false;
   let exposure = 1;
 
-  let skyboxImageSelected = "";
+  let skyboxImageSelected = '';
 
-  let modelURL = "https://modelviewer.dev/shared-assets/models/Astronaut.glb";
-  function loadCorset () {
-    modelURL = "https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/Corset/glTF-Binary/Corset.glb"
-  } 
-  function loadAstronaut () {
-    modelURL = "https://modelviewer.dev/shared-assets/models/Astronaut.glb"
-  } 
+  let modelURL = 'https://modelviewer.dev/shared-assets/models/Astronaut.glb';
+  function loadCorset() {
+    modelURL =
+      'https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/Corset/glTF-Binary/Corset.glb';
+  }
+  function loadAstronaut() {
+    modelURL = 'https://modelviewer.dev/shared-assets/models/Astronaut.glb';
+  }
 </script>
 
 <style>
@@ -68,13 +69,13 @@
     color: grey;
   }
 
-  .openLeftBtn:hover, .openLeftBtn:active {
+  .openLeftBtn:hover,
+  .openLeftBtn:active {
     background-color: lightblue;
   }
   .openLeftBtn::before {
     content: '>';
   }
-
 
   .modelViewer {
     display: block;
@@ -96,30 +97,29 @@
     content: '<';
   }
 
-  .closeLeft:hover, .closeLeft:active {
+  .closeLeft:hover,
+  .closeLeft:active {
     background-color: lightblue;
-   }
-  
+  }
 </style>
 
 <div class="container">
   <div class="left" class:openLeft>
     {#if openLeft}
-      <button class="closeLeft" on:click={() => openLeft = false} />
+      <button class="closeLeft" on:click={() => (openLeft = false)} />
     {/if}
     <DesktopLeft
-      bind:files={files}
-      loadCorset={loadCorset}
-      loadAstronaut={loadAstronaut}
-      bind:skyboxImageSelected={skyboxImageSelected}
-      bind:autoRotate={autoRotate}
-      bind:exposure={exposure}
-    />
+      bind:files
+      {loadCorset}
+      {loadAstronaut}
+      bind:skyboxImageSelected
+      bind:autoRotate
+      bind:exposure />
   </div>
 
   <div class="right">
     {#if !openLeft}
-      <button class="openLeftBtn" on:click={() => openLeft = true} />
+      <button class="openLeftBtn" on:click={() => (openLeft = true)} />
     {/if}
 
     {#if files && files[0]}
@@ -128,8 +128,7 @@
         src={URL.createObjectURL(files[0])}
         alt="A 3D model of an astronaut"
         auto-rotate={autoRotate || undefined}
-        camera-controls
-      />
+        camera-controls />
     {:else}
       <model-viewer
         class="modelViewer"
@@ -137,9 +136,7 @@
         skybox-image={skyboxImageSelected || undefined}
         auto-rotate={autoRotate || undefined}
         camera-controls
-        exposure={exposure}
-      />
+        {exposure} />
     {/if}
   </div>
 </div>
-
