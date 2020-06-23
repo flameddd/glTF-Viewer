@@ -14,7 +14,9 @@
   - scroll up 1px when load file for hide URL bar
   - icon on the top, click show drawer
 - lint, hooks
-- PWA manifest file
+- PWA manifest file (done)
+- Service worker
+  - re-think cache file (demo model?, skybox?) strategy
 - CI/CD deploy to github page
 - open left button's > set to css before content, not use string
 
