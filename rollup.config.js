@@ -3,8 +3,15 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
+import replace from '@rollup/plugin-replace';
+import copy from 'rollup-plugin-copy';
 
 const production = !process.env.ROLLUP_WATCH;
+const isDeployGithubPages = process.env.GITHUB_PAGES;
+
+const manifestTarget = !isDeployGithubPages
+  ? { src: 'manifest.json', dest: 'public' }
+  : { src: 'manifest.GP.json', dest: 'public', rename: 'manifest.json' };
 
 export default {
   input: 'src/main.js',
@@ -15,6 +22,14 @@ export default {
     file: 'public/bundle.js',
   },
   plugins: [
+    copy({ targets: [manifestTarget] }),
+    replace({
+      process: JSON.stringify({
+        env: {
+          swPath: !isDeployGithubPages ? '/' : './',
+        },
+      }),
+    }),
     svelte({
       // enable run-time checks when not in production
       dev: !production,
