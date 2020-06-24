@@ -5,6 +5,8 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import replace from '@rollup/plugin-replace';
 import copy from 'rollup-plugin-copy';
+import { generateSW } from 'rollup-plugin-workbox';
+import workboxConfig from './workbox-config';
 
 const production = !process.env.ROLLUP_WATCH;
 const isDeployGithubPages = process.env.GITHUB_PAGES;
@@ -59,6 +61,7 @@ export default {
     // If we're building for production (npm run build
     // instead of npm run dev), minify
     production && terser(),
+    generateSW(workboxConfig),
   ],
   watch: {
     clearScreen: false,

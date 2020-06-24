@@ -1,14 +1,10 @@
 /* eslint-env node */
-module.exports = {
+export const workboxConfig = {
   globDirectory: 'public/',
   globPatterns: ['**/*.{png,css,js,html,json}'],
-  runtimeCaching: [
-    {
-      urlPattern: /\.(?:css|js|json)$/,
-      handler: 'NetworkFirst',
-    },
-  ],
   swDest: 'public/sw.js',
   sourcemap: false,
   inlineWorkboxRuntime: true,
 };
+
+export default workboxConfig;

@@ -16,18 +16,17 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-svelte": "^5.0.3",
     "rollup-plugin-terser": "^6.1.0",
-    "svelte": "^3.0.0",
-    "workbox-cli": "^5.1.3"
+    "rollup-plugin-workbox": "^5.0.1",
+    "svelte": "^3.0.0"
   },
   "dependencies": {
     "@google/model-viewer": "^0.10.0",
     "sirv-cli": "^1.0.1"
   },
   "scripts": {
-    "workbox": "workbox generateSW",
-    "build": "npm run workbox && rollup -c",
-    "build:GP": "npm run workbox && GITHUB_PAGES=true rollup -c",
-    "autobuild": "npm run workbox && rollup -c -w",
+    "build": "rollup -c",
+    "build:GP": "GITHUB_PAGES=true rollup -c",
+    "autobuild": "rollup -c -w",
     "dev": "run-p start:dev autobuild",
     "start": "sirv public --single",
     "start:dev": "sirv public --single --dev",
