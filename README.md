@@ -17,8 +17,8 @@
 - PWA manifest file (done)
 - Service worker
   - re-think cache file (demo model?, skybox?) strategy
-  - add npm script ? workbox-cli create SW.js
-- CI/CD deploy to github page
+  - add npm script ? workbox-cli create SW.js (done)
+- CI/CD deploy to github page (done)
 - open left button's > set to css before content, not use string (done)
 
 ## feature
