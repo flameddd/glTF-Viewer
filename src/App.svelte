@@ -1,5 +1,6 @@
 <script>
   import DesktopLeft from './DesktopLeft.svelte';
+  import ModelCard from './ModelCard.svelte';
 
   // Check that service workers are supported
   if ('serviceWorker' in navigator) {
@@ -18,14 +19,31 @@
 
   let skyboxImageSelected = '';
 
-  let modelURL = 'https://modelviewer.dev/shared-assets/models/Astronaut.glb';
-  function loadCorset() {
-    modelURL =
-      'https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/Corset/glTF-Binary/Corset.glb';
-  }
-  function loadAstronaut() {
-    modelURL = 'https://modelviewer.dev/shared-assets/models/Astronaut.glb';
-  }
+  let modelURL = '';
+  const demoModel = [
+    {
+      url: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb',
+      label: 'Astronaut (2.7MB)',
+      thumbnailUrl: './assets/imgs/Astronaut_thumbnail.jpg',
+    },
+    {
+      url:
+        'https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/Corset/glTF-Binary/Corset.glb',
+      label: 'Corset (13MB)',
+      thumbnailUrl: './assets/imgs/Corset_thumbnail.jpg',
+    },
+    {
+      url:
+        'https://cdn.rawgit.com/cx20/gltf-test/master/sampleModels/Duck/glTF-Binary/Duck.glb',
+      label: 'Duck (120KB)',
+      thumbnailUrl: './assets/imgs/Duck_thumbnail.jpg',
+    },
+    {
+      url: 'https://threejs.org/examples/models/gltf/Horse.glb',
+      label: 'Horse (180KB)',
+      thumbnailUrl: './assets/imgs/Horse_thumbnail.jpg',
+    },
+  ];
 </script>
 
 <style>
@@ -35,6 +53,7 @@
   }
 
   .left {
+    background-color: #f6f8fa;
     flex-grow: 0;
     flex-shrink: 1;
     flex-basis: 0px;
@@ -51,9 +70,15 @@
   }
 
   .right {
-    border: 1px solid blue;
-    position: relative;
+    align-items: center;
+    background-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2"><path d="M1 2V0h1v1H0v1z" fill-opacity=".025"/></svg>');
+    background-size: 20px 20px;
+    border: 1px solid #e1e4e8;
+    display: flex;
+    flex-flow: column;
     flex: 1;
+    justify-content: center;
+    position: relative;
   }
 
   .openLeftBtn {
@@ -78,13 +103,47 @@
     content: '>';
   }
 
+  .appLogo {
+    background-image: url('./assets/imgs/glTF_Viewer192x192.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    flex: 0 0 40%;
+    width: 150px;
+  }
+
+  .selectAnModelBtn {
+    color: #0366d6;
+    cursor: pointer;
+    font-size: 4vw;
+    font-weight: bold;
+    margin: 0;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .selectAnModelBtn:hover {
+    text-decoration: underline;
+  }
+
+  .tryLabel {
+    font-weight: bold;
+    margin: 16px 0 0;
+  }
+
+  .modelCards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
   .modelViewer {
     display: block;
     height: 100%;
     width: 100%;
   }
 
-  .closeLeft {
+  .closeLeftBtn {
     right: 0;
     padding: 0 12px;
     position: absolute;
@@ -94,25 +153,45 @@
     border: 0;
     background: transparent;
   }
-  .closeLeft::before {
+  .closeLeftBtn::before {
     content: '<';
   }
 
-  .closeLeft:hover,
-  .closeLeft:active {
+  .closeLeftBtn:hover,
+  .closeLeftBtn:active {
     background-color: lightblue;
+  }
+
+  @media (max-width: 600px) {
+    .left,
+    .closeLeftBtn,
+    .openLeftBtn {
+      display: none;
+    }
+
+    .selectAnModelBtn {
+      font-size: 1.5rem;
+    }
+
+    .appLogo {
+      flex-basis: 100px;
+      margin-bottom: auto;
+      margin-top: 20px;
+      width: 100px;
+    }
   }
 </style>
 
 <div class="container">
   <div class="left" class:openLeft>
     {#if openLeft}
-      <button class="closeLeft" on:click={() => (openLeft = false)} />
+      <button class="closeLeftBtn" on:click={() => (openLeft = false)} />
     {/if}
     <DesktopLeft
       bind:files
-      {loadCorset}
-      {loadAstronaut}
+      handleOnChange={() => (modelURL = URL.createObjectURL(files[0]))}
+      loadCorset={() => (modelURL = demoModel[1].url)}
+      loadAstronaut={() => (modelURL = demoModel[0].url)}
       bind:skyboxImageSelected
       bind:autoRotate
       bind:exposure />
@@ -123,14 +202,33 @@
       <button class="openLeftBtn" on:click={() => (openLeft = true)} />
     {/if}
 
-    {#if files && files[0]}
-      <model-viewer
-        class="modelViewer"
-        src={URL.createObjectURL(files[0])}
-        alt="A 3D model of an astronaut"
-        auto-rotate={autoRotate || undefined}
-        camera-controls />
-    {:else}
+    {#if !modelURL}
+      <div class="appLogo" />
+      <p
+        class="selectAnModelBtn"
+        on:click={() => document
+            .querySelector('#placeholderSelectModelBtn')
+            .click()}>
+        select glTF/GLB model
+      </p>
+      <input
+        id="placeholderSelectModelBtn"
+        type="file"
+        bind:files
+        style="display: none;"
+        on:change={() => (modelURL = URL.createObjectURL(files[0]))} />
+      <p class="tryLabel">Or try one of these:</p>
+      <div class="modelCards">
+        {#each demoModel as { url, label, thumbnailUrl }, i}
+          <ModelCard
+            {label}
+            {thumbnailUrl}
+            handleOnClick={() => (modelURL = url)} />
+        {/each}
+      </div>
+    {/if}
+
+    {#if modelURL}
       <model-viewer
         class="modelViewer"
         src={modelURL}

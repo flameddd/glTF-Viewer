@@ -1,5 +1,6 @@
 <script>
   export let files;
+  export let handleOnChange;
   export let loadCorset;
   export let loadAstronaut;
   export let skyboxImageSelected;
@@ -49,7 +50,12 @@
     <b>glTF/GLB</b>
     model
   </div>
-  <input class="file" type="file" name="load model" bind:files />
+  <input
+    class="file"
+    type="file"
+    name="load model"
+    bind:files
+    on:change={handleOnChange} />
 </div>
 {#if isOnline}
   <div class="section">
