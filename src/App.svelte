@@ -107,7 +107,8 @@
     background-image: url('./assets/imgs/glTF_Viewer192x192.png');
     background-repeat: no-repeat;
     background-size: contain;
-    flex: 0 0 40%;
+    height: 150px;
+    margin: 60px 0;
     width: 150px;
   }
 
@@ -174,9 +175,8 @@
     }
 
     .appLogo {
-      flex-basis: 100px;
-      margin-bottom: auto;
-      margin-top: 20px;
+      height: 100px;
+      margin: 40px 0;
       width: 100px;
     }
   }
