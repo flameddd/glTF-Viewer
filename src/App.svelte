@@ -15,6 +15,10 @@
 
   const URL = window.URL;
 
+  let isOnline = navigator.onLine;
+  window.addEventListener('online', () => (isOnline = true));
+  window.addEventListener('offline', () => (isOnline = false));
+
   let files;
 
   let openLeft = true;
@@ -168,7 +172,8 @@
       bind:modelURL
       bind:skyboxImageSelected
       bind:autoRotate
-      bind:exposure />
+      bind:exposure
+      bind:isOnline />
   </div>
 
   <div class="right">
@@ -191,15 +196,19 @@
         bind:files
         style="display: none;"
         on:change={() => (modelURL = URL.createObjectURL(files[0]))} />
-      <TryOneOfThere />
-      <div class="modelCards">
-        {#each models as { url, label, thumbnailUrl }, i}
-          <ModelCard
-            {label}
-            {thumbnailUrl}
-            handleOnClick={() => (modelURL = url)} />
-        {/each}
-      </div>
+      {#if isOnline}
+        <TryOneOfThere />
+      {/if}
+      {#if isOnline}
+        <div class="modelCards">
+          {#each models as { url, label, thumbnailUrl }, i}
+            <ModelCard
+              {label}
+              {thumbnailUrl}
+              handleOnClick={() => (modelURL = url)} />
+          {/each}
+        </div>
+      {/if}
     {/if}
 
     {#if modelURL}

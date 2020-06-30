@@ -5,6 +5,7 @@ export const workboxConfig = {
   swDest: 'public/sw.js',
   sourcemap: false,
   inlineWorkboxRuntime: true,
+  cleanupOutdatedCaches: true,
 };
 
 export default workboxConfig;

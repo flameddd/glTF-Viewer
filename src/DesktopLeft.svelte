@@ -2,6 +2,7 @@
   import TryOneOfThere from './TryOneOfThese.svelte';
   import ModelSquare from './ModelSquare.svelte';
   import models from './models.js';
+  import skyboxImages from './skyboxImages.js';
 
   export let files;
   export let handleOnChange;
@@ -9,24 +10,7 @@
   export let skyboxImageSelected;
   export let autoRotate;
   export let exposure;
-
-  let isOnline = navigator.onLine;
-  window.addEventListener('online', () => (isOnline = true));
-  window.addEventListener('offline', () => (isOnline = false));
-
-  const skyboxImages = [
-    { text: 'default', url: '' },
-    {
-      text: 'spruit sunrise',
-      url:
-        'https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k_HDR.hdr',
-    },
-    {
-      text: 'whipple creek regional park',
-      url:
-        'https://modelviewer.dev/assets/whipple_creek_regional_park_04_1k.hdr',
-    },
-  ];
+  export let isOnline;
 
   function handleOnClick(url) {
     modelURL = url;
