@@ -1,6 +1,8 @@
 <script>
   import DesktopLeft from './DesktopLeft.svelte';
   import ModelCard from './ModelCard.svelte';
+  import TryOneOfThere from './TryOneOfThese.svelte';
+  import models from './models.js';
 
   // Check that service workers are supported
   if ('serviceWorker' in navigator) {
@@ -11,6 +13,8 @@
     });
   }
 
+  const URL = window.URL;
+
   let files;
 
   let openLeft = true;
@@ -20,30 +24,6 @@
   let skyboxImageSelected = '';
 
   let modelURL = '';
-  const demoModel = [
-    {
-      url: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb',
-      label: 'Astronaut (2.7MB)',
-      thumbnailUrl: './assets/imgs/Astronaut_thumbnail.jpg',
-    },
-    {
-      url:
-        'https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/Corset/glTF-Binary/Corset.glb',
-      label: 'Corset (13MB)',
-      thumbnailUrl: './assets/imgs/Corset_thumbnail.jpg',
-    },
-    {
-      url:
-        'https://cdn.rawgit.com/cx20/gltf-test/master/sampleModels/Duck/glTF-Binary/Duck.glb',
-      label: 'Duck (120KB)',
-      thumbnailUrl: './assets/imgs/Duck_thumbnail.jpg',
-    },
-    {
-      url: 'https://threejs.org/examples/models/gltf/Horse.glb',
-      label: 'Horse (180KB)',
-      thumbnailUrl: './assets/imgs/Horse_thumbnail.jpg',
-    },
-  ];
 </script>
 
 <style>
@@ -126,11 +106,6 @@
     text-decoration: underline;
   }
 
-  .tryLabel {
-    font-weight: bold;
-    margin: 16px 0 0;
-  }
-
   .modelCards {
     display: flex;
     flex-wrap: wrap;
@@ -190,8 +165,7 @@
     <DesktopLeft
       bind:files
       handleOnChange={() => (modelURL = URL.createObjectURL(files[0]))}
-      loadCorset={() => (modelURL = demoModel[1].url)}
-      loadAstronaut={() => (modelURL = demoModel[0].url)}
+      bind:modelURL
       bind:skyboxImageSelected
       bind:autoRotate
       bind:exposure />
@@ -209,7 +183,7 @@
         on:click={() => document
             .querySelector('#placeholderSelectModelBtn')
             .click()}>
-        select glTF/GLB model
+        Select glTF/GLB model
       </p>
       <input
         id="placeholderSelectModelBtn"
@@ -217,9 +191,9 @@
         bind:files
         style="display: none;"
         on:change={() => (modelURL = URL.createObjectURL(files[0]))} />
-      <p class="tryLabel">Or try one of these:</p>
+      <TryOneOfThere />
       <div class="modelCards">
-        {#each demoModel as { url, label, thumbnailUrl }, i}
+        {#each models as { url, label, thumbnailUrl }, i}
           <ModelCard
             {label}
             {thumbnailUrl}

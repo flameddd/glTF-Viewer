@@ -1,8 +1,11 @@
 <script>
+  import TryOneOfThere from './TryOneOfThese.svelte';
+  import ModelSquare from './ModelSquare.svelte';
+  import models from './models.js';
+
   export let files;
   export let handleOnChange;
-  export let loadCorset;
-  export let loadAstronaut;
+  export let modelURL;
   export let skyboxImageSelected;
   export let autoRotate;
   export let exposure;
@@ -24,6 +27,10 @@
         'https://modelviewer.dev/assets/whipple_creek_regional_park_04_1k.hdr',
     },
   ];
+
+  function handleOnClick(url) {
+    modelURL = url;
+  }
 </script>
 
 <style>
@@ -40,13 +47,14 @@
   }
 
   .file {
+    margin: 0;
     width: 100%;
   }
 </style>
 
 <div class="section">
   <div class="title">
-    Load
+    Select
     <b>glTF/GLB</b>
     model
   </div>
@@ -59,13 +67,13 @@
 </div>
 {#if isOnline}
   <div class="section">
-    <div class="title">
-      or load
-      <b>demo</b>
-      model
-    </div>
-    <button on:click={loadAstronaut}>load Astronaut (2.7MB)</button>
-    <button on:click={loadCorset}>Corset (13MB)</button>
+    <TryOneOfThere />
+    {#each models as { url, thumbnailUrl, size }, i}
+      <ModelSquare
+        {thumbnailUrl}
+        {size}
+        handleOnClick={() => handleOnClick(url)} />
+    {/each}
   </div>
 {/if}
 
