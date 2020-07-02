@@ -43,6 +43,7 @@
     model
   </div>
   <input
+    id="placeholderSelectModelBtn"
     class="file"
     type="file"
     name="load model"

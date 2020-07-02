@@ -190,12 +190,6 @@
             .click()}>
         Select glTF/GLB model
       </p>
-      <input
-        id="placeholderSelectModelBtn"
-        type="file"
-        bind:files
-        style="display: none;"
-        on:change={() => (modelURL = URL.createObjectURL(files[0]))} />
       {#if isOnline}
         <TryOneOfThere />
       {/if}
