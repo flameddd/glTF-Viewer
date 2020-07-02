@@ -1,6 +1,3 @@
-<p align="center">
-  <video width="auto" height="600" src="./demo.mp4">
-</p>
 
 # PWA glTF/GLB models viewer
 - desktop/mobile
