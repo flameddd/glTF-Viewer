@@ -41,16 +41,16 @@
     flex-grow: 0;
     flex-shrink: 1;
     flex-basis: 0px;
-    padding: 0px;
-    position: relative;
     overflow: hidden;
+    position: relative;
     transition: flex-basis 0.3s;
   }
 
   .openLeft {
-    flex-basis: 320px;
+    flex-basis: 30%;
     padding: 15px;
     padding-right: 20px;
+    max-width: 320px;
   }
 
   .right {
@@ -91,8 +91,7 @@
     background-image: url('./assets/imgs/glTF_Viewer192x192.png');
     background-repeat: no-repeat;
     background-size: contain;
-    height: 150px;
-    margin: 60px 0;
+    flex: 0 0 150px;
     width: 150px;
   }
 
@@ -101,7 +100,7 @@
     cursor: pointer;
     font-size: 4vw;
     font-weight: bold;
-    margin: 0;
+    margin: 1rem 0;
     text-align: center;
     white-space: nowrap;
   }
@@ -124,6 +123,7 @@
   }
 
   .closeLeftBtn {
+    margin: 0;
     right: 0;
     padding: 0 12px;
     position: absolute;
@@ -154,9 +154,15 @@
     }
 
     .appLogo {
-      height: 100px;
-      margin: 40px 0;
+      flex-basis: 100px;
       width: 100px;
+    }
+  }
+
+  @media (max-height: 450px) {
+    .modelCardTitle,
+    .modelCards {
+      display: none;
     }
   }
 </style>
@@ -191,9 +197,9 @@
         Select glTF/GLB model
       </p>
       {#if isOnline}
-        <TryOneOfThere />
-      {/if}
-      {#if isOnline}
+        <span class="modelCardTitle">
+          <TryOneOfThere />
+        </span>
         <div class="modelCards">
           {#each models as { url, label, thumbnailUrl }, i}
             <ModelCard

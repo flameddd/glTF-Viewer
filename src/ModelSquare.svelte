@@ -11,8 +11,8 @@
     border-radius: 4px;
     cursor: pointer;
     display: inline-block;
-    margin: 0 6px;
-    padding: 7px;
+    margin: 8px 5px 0;
+    padding: 6px;
   }
 
   .container:hover {
