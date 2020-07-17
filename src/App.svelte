@@ -188,6 +188,7 @@
 
     .openBottomDrawer {
       height: 30%;
+      padding-bottom: 30px;
     }
   }
 
