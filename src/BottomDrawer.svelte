@@ -114,7 +114,7 @@
         style={skyboxImageSelected === img.url ? 'border-color: blue;' : ''}>
         <span
           class="skyBox"
-          style={`background-image: url(${img.backgroundImage});`} />
+          style={`background-image: url('${img.backgroundImage}');`} />
       </span>
     {/each}
   </span>
