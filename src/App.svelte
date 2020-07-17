@@ -41,11 +41,11 @@
   .left {
     background-color: #f6f8fa;
     flex-grow: 0;
-    flex-shrink: 1;
+    flex-shrink: 0;
     flex-basis: 0px;
     overflow: hidden;
     position: relative;
-    transition: flex-basis 0.3s;
+    transition: all 0.3s;
   }
 
   .openLeft {
