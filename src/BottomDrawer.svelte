@@ -34,7 +34,7 @@
     border: 2px solid transparent;
     border-radius: 50%;
     display: inline-flex;
-    margin: 5px 2px;
+    margin: 2px;
     padding: 5px;
   }
 
