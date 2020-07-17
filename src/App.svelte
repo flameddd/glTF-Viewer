@@ -3,6 +3,7 @@
   import ModelCard from './ModelCard.svelte';
   import TryOneOfThere from './TryOneOfThese.svelte';
   import models from './models.js';
+  import BottomDrawer from './BottomDrawer.svelte';
 
   // Check that service workers are supported
   if ('serviceWorker' in navigator) {
@@ -22,11 +23,11 @@
   let files;
 
   let openLeft = true;
+  let openBottomDrawer = false;
   let autoRotate = false;
   let exposure = 1;
 
   let skyboxImageSelected = '';
-
   let modelURL = '';
 </script>
 
@@ -34,6 +35,7 @@
   .container {
     display: flex;
     height: 100%;
+    position: relative;
   }
 
   .left {
@@ -63,6 +65,11 @@
     flex: 1;
     justify-content: center;
     position: relative;
+    transition: height 0.3s ease-in-out;
+  }
+
+  .openBottom {
+    height: 70%;
   }
 
   .openLeftBtn {
@@ -142,6 +149,10 @@
     background-color: lightblue;
   }
 
+  .mobileBottomDrawer {
+    display: none;
+  }
+
   @media (max-width: 600px) {
     .left,
     .closeLeftBtn,
@@ -156,6 +167,27 @@
     .appLogo {
       flex-basis: 100px;
       width: 100px;
+    }
+
+    .mobileBottomDrawer {
+      background-color: white;
+      border: 1px solid;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      position: absolute;
+      height: 30px;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      transition: height 0.3s ease-in-out;
+      padding: 10px 20px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .openBottomDrawer {
+      height: 30%;
     }
   }
 
@@ -182,7 +214,7 @@
       bind:isOnline />
   </div>
 
-  <div class="right">
+  <div class="right" class:openBottom={openBottomDrawer}>
     {#if !openLeft}
       <button class="openLeftBtn" on:click={() => (openLeft = true)} />
     {/if}
@@ -221,4 +253,32 @@
         {exposure} />
     {/if}
   </div>
+  {#if modelURL}
+    <div
+      class="mobileBottomDrawer"
+      class:openBottomDrawer
+      on:click={() => {
+        if (!openBottomDrawer) openBottomDrawer = true;
+      }}>
+      {#if openBottomDrawer}
+        <BottomDrawer
+          bind:openBottomDrawer
+          bind:modelURL
+          bind:isOnline
+          bind:skyboxImageSelected
+          bind:autoRotate
+          bind:exposure
+          onClose={(event) => {
+            event.stopPropagation();
+            openBottomDrawer = false;
+          }} />
+      {:else}
+        <span
+          style="transform: rotate(-90deg); font-size: 1.5rem; font-weight:
+          bold;">
+          >
+        </span>
+      {/if}
+    </div>
+  {/if}
 </div>
