@@ -4,8 +4,8 @@
   import BrightnessIcon from './brightnessSVG.svelte';
   import models from './models.js';
   import skyboxImages from './skyboxImages.js';
+  import BottomListDivider from './BottomListDivider.svelte';
 
-  export let onClose = function () {};
   export let modelURL = '';
   export let isOnline = false;
   export let skyboxImageSelected = '';
@@ -15,18 +15,10 @@
 
 <style>
   .container {
-    position: relative;
-    height: 100%;
+    display: flex;
+    scroll-snap-type: x mandatory;
+    overflow-x: auto;
     width: 100%;
-  }
-
-  .itemSection {
-    align-items: center;
-    border: 1px solid;
-    border-radius: 10px;
-    display: inline-flex;
-    margin-bottom: 4px;
-    padding: 2px;
   }
 
   .item {
@@ -36,26 +28,7 @@
     display: inline-flex;
     margin: 2px;
     padding: 5px;
-  }
-
-  .closeBtn {
-    align-items: center;
-    background-color: #fff;
-    border: 1px solid black;
-    border-radius: 50%;
-    display: flex;
-    font-size: 1.5rem;
-    font-weight: bold;
-    height: 50px;
-    position: absolute;
-    justify-content: center;
-    right: 30px;
-    top: -35px;
-    width: 50px;
-  }
-
-  .closeBtn::before {
-    content: '↓';
+    scroll-snap-align: center;
   }
 
   .modelItem {
@@ -84,61 +57,54 @@
 </style>
 
 <div class="container">
-  <span class="closeBtn" on:click={onClose} />
-  <span class="itemSection">
-    <span
-      class="item"
-      on:click={() => document
-          .querySelector('#placeholderSelectModelBtn')
-          .click()}>
-      <FolderIcon props={{ width: '36', height: '36', fill: 'grey' }} />
-    </span>
-    {#if isOnline}
-      {#each models as { url, thumbnailUrl, size }, i}
-        <span
-          class="item"
-          on:click={() => (modelURL = url)}
-          style={modelURL === url ? 'border-color: blue;' : ''}>
-          <span
-            class="modelItem"
-            style="background-image: url({thumbnailUrl});" />
-        </span>
-      {/each}
-    {/if}
+  <span
+    class="item"
+    on:click={() => document
+        .querySelector('#placeholderSelectModelBtn')
+        .click()}>
+    <FolderIcon props={{ width: '36', height: '36', fill: 'grey' }} />
   </span>
-  <span class="itemSection">
-    {#each skyboxImages as img}
+  {#if isOnline}
+    {#each models as { url, thumbnailUrl, size }, i}
       <span
         class="item"
-        on:click={() => (skyboxImageSelected = img.url)}
-        style={skyboxImageSelected === img.url ? 'border-color: blue;' : ''}>
+        on:click={() => (modelURL = url)}
+        style={modelURL === url ? 'border-color: blue;' : ''}>
         <span
-          class="skyBox"
-          style={`background-image: url('${img.backgroundImage}');`} />
+          class="modelItem"
+          style="background-image: url({thumbnailUrl});" />
       </span>
     {/each}
-  </span>
-  <span class="itemSection">
+  {/if}
+  <BottomListDivider />
+  {#each skyboxImages as img}
     <span
       class="item"
-      on:click={() => (autoRotate = !autoRotate)}
-      style={autoRotate ? 'border-color: blue;' : ''}>
-      <RotateIcon props={{ width: '36', height: '36', fill: 'grey' }} />
+      on:click={() => (skyboxImageSelected = img.url)}
+      style={skyboxImageSelected === img.url ? 'border-color: blue;' : ''}>
+      <span
+        class="skyBox"
+        style={`background-image: url('${img.backgroundImage}');`} />
     </span>
+  {/each}
+  <BottomListDivider />
+  <span
+    class="item"
+    on:click={() => (autoRotate = !autoRotate)}
+    style={autoRotate ? 'border-color: blue;' : ''}>
+    <RotateIcon props={{ width: '36', height: '36', fill: 'grey' }} />
   </span>
-
-  <span class="itemSection">
-    <span class="item" style="border-color: transparent;">
-      <BrightnessIcon props={{ width: '36', height: '36', fill: 'grey' }} />
-    </span>
-    <span class="item" style="border-color: transparent;">
-      <input
-        class="exposure"
-        type="range"
-        min="0"
-        max="2"
-        step="0.1"
-        bind:value={exposure} />
-    </span>
+  <BottomListDivider />
+  <span class="item" style="border-color: transparent;">
+    <BrightnessIcon props={{ width: '36', height: '36', fill: 'grey' }} />
+  </span>
+  <span class="item" style="border-color: transparent;">
+    <input
+      class="exposure"
+      type="range"
+      min="0"
+      max="2"
+      step="0.1"
+      bind:value={exposure} />
   </span>
 </div>

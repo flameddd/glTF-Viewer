@@ -23,7 +23,6 @@
   let files;
 
   let openLeft = true;
-  let openBottomDrawer = false;
   let autoRotate = false;
   let exposure = 1;
 
@@ -66,10 +65,6 @@
     justify-content: center;
     position: relative;
     transition: height 0.3s ease-in-out;
-  }
-
-  .openBottom {
-    height: 70%;
   }
 
   .openLeftBtn {
@@ -175,20 +170,14 @@
       border-top-left-radius: 20px;
       border-top-right-radius: 20px;
       position: absolute;
-      height: 30px;
+      height: 90px;
       bottom: 0;
       left: 0;
       right: 0;
-      transition: height 0.3s ease-in-out;
-      padding: 10px 20px 0;
+      padding: 0 10px;
       display: flex;
       justify-content: center;
       align-items: center;
-    }
-
-    .openBottomDrawer {
-      height: 30%;
-      padding-bottom: 30px;
     }
   }
 
@@ -215,7 +204,7 @@
       bind:isOnline />
   </div>
 
-  <div class="right" class:openBottom={openBottomDrawer}>
+  <div class="right">
     {#if !openLeft}
       <button class="openLeftBtn" on:click={() => (openLeft = true)} />
     {/if}
@@ -255,31 +244,13 @@
     {/if}
   </div>
   {#if modelURL}
-    <div
-      class="mobileBottomDrawer"
-      class:openBottomDrawer
-      on:click={() => {
-        if (!openBottomDrawer) openBottomDrawer = true;
-      }}>
-      {#if openBottomDrawer}
-        <BottomDrawer
-          bind:openBottomDrawer
-          bind:modelURL
-          bind:isOnline
-          bind:skyboxImageSelected
-          bind:autoRotate
-          bind:exposure
-          onClose={(event) => {
-            event.stopPropagation();
-            openBottomDrawer = false;
-          }} />
-      {:else}
-        <span
-          style="transform: rotate(-90deg); font-size: 1.5rem; font-weight:
-          bold;">
-          >
-        </span>
-      {/if}
+    <div class="mobileBottomDrawer">
+      <BottomDrawer
+        bind:modelURL
+        bind:isOnline
+        bind:skyboxImageSelected
+        bind:autoRotate
+        bind:exposure />
     </div>
   {/if}
 </div>
