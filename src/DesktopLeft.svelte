@@ -63,6 +63,7 @@
       class="file"
       type="file"
       name="load model"
+      accept=".gltf,.glb"
       bind:files
       on:change={handleOnChange} />
   </div>
